@@ -1,0 +1,28 @@
+name: Update Posts Index
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**.md'
+
+permissions:
+  contents: write
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate posts index
+        run: |
+          cd posts
+          ls -1 *.md 2>/dev/null | jq -R -s 'split("\n") | map(select(length > 0))' > index.json
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts/index.json
+          git diff --staged --quiet || (git commit -m "chore: auto-update posts index" && git push)

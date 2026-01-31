@@ -135,9 +135,7 @@ export async function initBandConditions() {
   // Wire up refresh button
   const refreshBtn = document.getElementById('band-refresh');
   if (refreshBtn) {
-    refreshBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation(); // Prevent collapsible from toggling
+    refreshBtn.addEventListener('click', async () => {
       refreshBtn.classList.add('spinning');
       container.innerHTML = '<p class="text-secondary">Refreshing...</p>';
       await fetchBandConditions();

@@ -1,4 +1,8 @@
 const HAMQSL_URL = 'https://www.hamqsl.com/solarxml.php';
+const CORS_PROXIES = [
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`
+];
 
 function conditionClass(condition) {
   const c = condition.toLowerCase();
@@ -52,46 +56,76 @@ function renderConditions(data) {
   `;
 }
 
+function renderFallbackWidget(container) {
+  container.innerHTML = `
+    <div class="band-fallback">
+      <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">
+        <img src="https://www.hamqsl.com/solar101vhfpic.php" alt="Solar-Terrestrial Data and Band Conditions" loading="lazy" style="width: 100%; max-width: 468px; border-radius: var(--border-radius-sm);">
+      </a>
+      <p class="text-secondary" style="margin-top: var(--space-sm); font-size: var(--font-size-sm);">
+        Solar data provided by N0NBH — <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">hamqsl.com</a>
+      </p>
+    </div>
+  `;
+}
+
+function parseXML(text) {
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(text, 'text/xml');
+
+  const solar = xml.querySelector('solardata');
+  if (!solar) throw new Error('No solar data found');
+
+  const data = {
+    sfi: solar.querySelector('solarflux')?.textContent || '—',
+    sn: solar.querySelector('sunspots')?.textContent || '—',
+    aindex: solar.querySelector('aindex')?.textContent || '—',
+    kindex: solar.querySelector('kindex')?.textContent || '—',
+    updated: solar.querySelector('updated')?.textContent || '—',
+    bands: []
+  };
+
+  const bandNodes = solar.querySelectorAll('calculatedconditions band');
+  bandNodes.forEach(band => {
+    const name = band.getAttribute('name');
+    const time = band.getAttribute('time');
+    const condition = band.textContent;
+
+    let existing = data.bands.find(b => b.name === name);
+    if (!existing) {
+      existing = { name, day: '—', night: '—' };
+      data.bands.push(existing);
+    }
+    if (time === 'day') existing.day = condition;
+    if (time === 'night') existing.night = condition;
+  });
+
+  return data;
+}
+
 export async function initBandConditions() {
   const container = document.getElementById('band-conditions');
   if (!container) return;
 
-  try {
-    const response = await fetch(HAMQSL_URL);
-    const text = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, 'text/xml');
+  // Try direct fetch first (works on localhost), then CORS proxies, then fallback to image widget
+  const attempts = [
+    HAMQSL_URL,
+    ...CORS_PROXIES.map(proxy => proxy(HAMQSL_URL))
+  ];
 
-    const solar = xml.querySelector('solardata');
-    if (!solar) throw new Error('No solar data found');
-
-    const data = {
-      sfi: solar.querySelector('solarflux')?.textContent || '—',
-      sn: solar.querySelector('sunspots')?.textContent || '—',
-      aindex: solar.querySelector('aindex')?.textContent || '—',
-      kindex: solar.querySelector('kindex')?.textContent || '—',
-      updated: solar.querySelector('updated')?.textContent || '—',
-      bands: []
-    };
-
-    const bandNodes = solar.querySelectorAll('calculatedconditions band');
-    bandNodes.forEach(band => {
-      const name = band.getAttribute('name');
-      const time = band.getAttribute('time');
-      const condition = band.textContent;
-
-      let existing = data.bands.find(b => b.name === name);
-      if (!existing) {
-        existing = { name, day: '—', night: '—' };
-        data.bands.push(existing);
-      }
-      if (time === 'day') existing.day = condition;
-      if (time === 'night') existing.night = condition;
-    });
-
-    renderConditions(data);
-  } catch (err) {
-    container.innerHTML = '<p class="text-secondary">Unable to load band conditions. Try refreshing the page.</p>';
-    console.error('Band conditions error:', err);
+  for (const url of attempts) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) continue;
+      const text = await response.text();
+      const data = parseXML(text);
+      renderConditions(data);
+      return;
+    } catch (err) {
+      continue;
+    }
   }
+
+  // All fetch attempts failed — fall back to the N0NBH image widget
+  renderFallbackWidget(container);
 }

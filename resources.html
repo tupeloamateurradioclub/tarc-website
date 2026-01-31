@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-text-size="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Amateur radio resources from TARC (K5TUP) — band conditions, local repeaters, nets, and useful links.">
+  <title>Resources — TARC</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        TARC <span class="callsign">K5TUP</span>
+      </a>
+      <button class="navbar-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="resources.html" class="active">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggles">
+        <button class="toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-icon">&#9789;</span>
+        </button>
+        <button class="toggle-btn" id="text-size-toggle" aria-label="Toggle large text">
+          Aa
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="page-content">
+      <div class="container">
+        <div class="page-header">
+          <h1>Resources</h1>
+          <p>Helpful references for amateur radio operators.</p>
+        </div>
+
+        <details class="collapsible" open>
+          <summary>Band Conditions</summary>
+          <div class="collapsible-content">
+            <div id="band-conditions">
+              <p class="text-secondary">Loading band conditions...</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Local Repeaters</summary>
+          <div class="collapsible-content">
+            <p>Local repeater information for the Tupelo and northeast Mississippi area will be listed here. Check back for frequencies, offsets, and tone information.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Nets</summary>
+          <div class="collapsible-content">
+            <p>Information about local and regional nets will be posted here, including schedules, frequencies, and net control details.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Useful Links</summary>
+          <div class="collapsible-content">
+            <ul>
+              <li><a href="https://www.arrl.org" target="_blank" rel="noopener">ARRL — American Radio Relay League</a></li>
+              <li><a href="https://www.fcc.gov/amateur-radio-service" target="_blank" rel="noopener">FCC Amateur Radio Service</a></li>
+              <li><a href="https://www.qrz.com" target="_blank" rel="noopener">QRZ.com</a></li>
+              <li><a href="https://www.weather.gov/skywarn" target="_blank" rel="noopener">NWS Skywarn</a></li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; <span id="year"></span> Tupelo Amateur Radio Club — K5TUP</p>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

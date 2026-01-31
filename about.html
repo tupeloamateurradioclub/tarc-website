@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-text-size="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn about the Tupelo Amateur Radio Club (K5TUP) — our mission, officers, and club history.">
+  <title>About — TARC</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        TARC <span class="callsign">K5TUP</span>
+      </a>
+      <button class="navbar-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">News</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggles">
+        <button class="toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-icon">&#9789;</span>
+        </button>
+        <button class="toggle-btn" id="text-size-toggle" aria-label="Toggle large text">
+          Aa
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="page-content">
+      <div class="container">
+        <div class="page-header">
+          <h1>About</h1>
+          <p>Who we are and what we do.</p>
+        </div>
+
+        <details class="collapsible" open>
+          <summary>About the Club</summary>
+          <div class="collapsible-content">
+            <p>The Tupelo Amateur Radio Club (TARC) is a group of licensed amateur radio operators in the Tupelo, Mississippi area. We are dedicated to advancing the art and science of amateur radio, providing emergency communications, and fostering fellowship among radio enthusiasts.</p>
+            <p>Our club callsign is <strong>K5TUP</strong>. We welcome hams of all experience levels, from newly licensed operators to seasoned veterans.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Officers</summary>
+          <div class="collapsible-content">
+            <p>Club officers are elected annually. Current officer information will be posted here once available.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Club History</summary>
+          <div class="collapsible-content">
+            <p>The Tupelo Amateur Radio Club has a long history of serving the local community and promoting amateur radio in northeast Mississippi. More details about our history will be added soon.</p>
+          </div>
+        </details>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; <span id="year"></span> Tupelo Amateur Radio Club — K5TUP</p>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

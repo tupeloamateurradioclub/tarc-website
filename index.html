@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-text-size="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tupelo Amateur Radio Club (K5TUP) — News, events, and updates from TARC in Tupelo, Mississippi.">
+  <title>TARC — Tupelo Amateur Radio Club</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        TARC <span class="callsign">K5TUP</span>
+      </a>
+      <button class="navbar-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="active">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggles">
+        <button class="toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-icon">&#9789;</span>
+        </button>
+        <button class="toggle-btn" id="text-size-toggle" aria-label="Toggle large text">
+          Aa
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="page-content">
+      <div class="container">
+        <div class="page-header">
+          <h1>News</h1>
+          <p>Updates, announcements, and meeting recaps from TARC.</p>
+        </div>
+
+        <!-- Meeting banner -->
+        <div class="meeting-banner">
+          <div>
+            <h3>Next Meeting</h3>
+            <p>Details coming soon — check back for date, time, and location.</p>
+          </div>
+        </div>
+
+        <!-- Posts loaded by js/posts.js -->
+        <div id="posts-container">
+          <p class="text-secondary">Loading posts...</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; <span id="year"></span> Tupelo Amateur Radio Club — K5TUP</p>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

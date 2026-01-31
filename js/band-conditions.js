@@ -4,6 +4,9 @@ const FETCH_URLS = [
   'https://www.hamqsl.com/solarxml.php'
 ];
 
+let currentView = localStorage.getItem('tarc-band-view') || 'custom';
+let lastData = null;
+
 function conditionClass(condition) {
   const c = condition.toLowerCase();
   if (c === 'good') return 'condition-good';
@@ -11,11 +14,21 @@ function conditionClass(condition) {
   return 'condition-poor';
 }
 
-function renderConditions(data) {
-  const container = document.getElementById('band-conditions');
-  if (!container) return;
+function renderToolbar(updated) {
+  const viewLabel = currentView === 'custom' ? 'Classic Widget' : 'Custom View';
+  return `
+    <div class="band-toolbar">
+      <span class="band-updated text-secondary">${updated ? `Updated: ${updated}` : ''}</span>
+      <div class="band-toolbar-buttons">
+        <button class="refresh-btn" id="band-refresh" aria-label="Refresh band conditions">&#8635; Refresh</button>
+        <button class="refresh-btn" id="band-toggle-view" aria-label="Switch view">&#8596; ${viewLabel}</button>
+      </div>
+    </div>
+  `;
+}
 
-  container.innerHTML = `
+function renderCustomView(data) {
+  return `
     <div class="band-solar-indices">
       <div class="solar-index">
         <span class="solar-index-label">SFI</span>
@@ -52,12 +65,12 @@ function renderConditions(data) {
         `).join('')}
       </tbody>
     </table>
-    <p class="band-updated text-secondary">Updated: ${data.updated}</p>
+    ${renderToolbar(data.updated)}
   `;
 }
 
-function renderFallbackWidget(container) {
-  container.innerHTML = `
+function renderClassicView(updated) {
+  return `
     <div class="band-fallback">
       <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">
         <img src="https://www.hamqsl.com/solar101vhfpic.php" alt="Solar-Terrestrial Data and Band Conditions" loading="lazy" style="width: 100%; max-width: 468px; border-radius: var(--border-radius-sm);">
@@ -66,7 +79,42 @@ function renderFallbackWidget(container) {
         Solar data provided by N0NBH — <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">hamqsl.com</a>
       </p>
     </div>
+    ${renderToolbar(updated)}
   `;
+}
+
+function renderCurrentView() {
+  const container = document.getElementById('band-conditions');
+  if (!container) return;
+
+  if (currentView === 'custom' && lastData) {
+    container.innerHTML = renderCustomView(lastData);
+  } else {
+    container.innerHTML = renderClassicView(lastData?.updated || null);
+  }
+
+  wireUpButtons();
+}
+
+function wireUpButtons() {
+  const refreshBtn = document.getElementById('band-refresh');
+  const toggleBtn = document.getElementById('band-toggle-view');
+
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      refreshBtn.classList.add('spinning');
+      await fetchBandConditions();
+      refreshBtn.classList.remove('spinning');
+    });
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      currentView = currentView === 'custom' ? 'classic' : 'custom';
+      localStorage.setItem('tarc-band-view', currentView);
+      renderCurrentView();
+    });
+  }
 }
 
 function parseXML(text) {
@@ -114,16 +162,17 @@ async function fetchBandConditions() {
       if (!response.ok) continue;
       const text = await response.text();
       if (!text.includes('<solardata>')) continue;
-      const data = parseXML(text);
-      renderConditions(data);
+      lastData = parseXML(text);
+      renderCurrentView();
       return;
     } catch (err) {
       continue;
     }
   }
 
-  // All fetch attempts failed — fall back to the N0NBH image widget
-  renderFallbackWidget(container);
+  // All fetch attempts failed — show classic widget as fallback
+  currentView = 'classic';
+  renderCurrentView();
 }
 
 export async function initBandConditions() {
@@ -131,15 +180,4 @@ export async function initBandConditions() {
   if (!container) return;
 
   await fetchBandConditions();
-
-  // Wire up refresh button
-  const refreshBtn = document.getElementById('band-refresh');
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', async () => {
-      refreshBtn.classList.add('spinning');
-      container.innerHTML = '<p class="text-secondary">Refreshing...</p>';
-      await fetchBandConditions();
-      refreshBtn.classList.remove('spinning');
-    });
-  }
 }

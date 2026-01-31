@@ -2,6 +2,7 @@ backend:
   name: github
   repo: tupeloamateurradioclub/tarc-website
   branch: main
+  app_id: Ov23liApWoTcUvhlGB9S
 
 media_folder: "images/uploads"
 public_folder: "images/uploads"

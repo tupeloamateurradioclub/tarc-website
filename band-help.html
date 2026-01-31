@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-text-size="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Understanding HF band conditions, solar indices, and propagation data for amateur radio operators.">
+  <title>Band Conditions Guide — TARC</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        TARC <span class="callsign">K5TUP</span>
+      </a>
+      <button class="navbar-hamburger" aria-label="Toggle navigation" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="navbar-nav">
+        <li><a href="index.html">News</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggles">
+        <button class="toggle-btn" id="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-icon">&#9789;</span>
+        </button>
+        <button class="toggle-btn" id="text-size-toggle" aria-label="Toggle large text">
+          Aa
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="page-content">
+      <div class="container">
+        <div class="page-header">
+          <h1>Understanding Band Conditions</h1>
+          <p>A guide to the solar data and propagation indicators shown on our <a href="resources.html">Resources</a> page.</p>
+        </div>
+
+        <details class="collapsible" open>
+          <summary>Quick Start</summary>
+          <div class="collapsible-content">
+            <p>The band conditions widget shows real-time solar and geomagnetic data that affects how well radio signals travel through the ionosphere. Here's the short version:</p>
+            <ul>
+              <li><strong>High SFI + Low K-Index = good HF conditions.</strong> The sun is active enough to ionize the upper atmosphere, and the geomagnetic field is calm enough to let signals through.</li>
+              <li><strong>Higher bands (10m-20m)</strong> need strong solar activity and work best during the day.</li>
+              <li><strong>Lower bands (40m-80m)</strong> work best at night when the absorbing D-layer disappears.</li>
+              <li><strong>"Good"</strong> means the band supports long-distance contacts. <strong>"Fair"</strong> means propagation is possible but inconsistent. <strong>"Poor"</strong> means the band is unlikely to support reliable communication beyond ground-wave range.</li>
+            </ul>
+            <p>Read on for details about each indicator.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Solar Flux Index (SFI)</summary>
+          <div class="collapsible-content">
+            <p>The Solar Flux Index measures radio emissions from the sun at 2800 MHz (10.7 cm wavelength) and is one of the best indicators of overall solar activity relevant to HF propagation. Values range from about 65 to over 300.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>SFI Range</th><th>Conditions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>65-80</td><td><span class="condition-badge condition-poor">Quiet sun, lower bands only</span></td></tr>
+                <tr><td>80-120</td><td><span class="condition-badge condition-fair">Moderate, 20m-40m active</span></td></tr>
+                <tr><td>120-150</td><td><span class="condition-badge condition-good">Good, 15m-10m opening</span></td></tr>
+                <tr><td>150+</td><td><span class="condition-badge condition-good">Excellent, all bands active</span></td></tr>
+              </tbody>
+            </table>
+            <p>Higher SFI values increase the ionization of the F-layer, raising the Maximum Usable Frequency (MUF) and enabling propagation on bands that would otherwise be closed.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>Sunspot Number (SN)</summary>
+          <div class="collapsible-content">
+            <p>The Sunspot Number is a daily count of visible spots on the sun's surface and has been tracked for centuries. Higher sunspot numbers correlate directly with stronger ionospheric ionization, which means better HF propagation on the higher bands (10, 12, 15, and 17 meters).</p>
+            <p>During solar minimum, sunspot numbers hover near zero and HF activity concentrates on the lower bands (40, 80, and 160 meters). During solar maximum, counts can exceed 200 and all HF bands come alive. The sunspot number and SFI tend to track each other closely, but SFI is generally considered the more precise day-to-day metric.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>A-Index</summary>
+          <div class="collapsible-content">
+            <p>The A-Index is a daily average of geomagnetic activity derived from magnetometer readings, reported on a linear scale from 0 to 400. Lower values mean calmer conditions and better HF propagation.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>A-Index</th><th>Conditions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0-7</td><td><span class="condition-badge condition-good">Quiet — ideal for HF</span></td></tr>
+                <tr><td>8-15</td><td><span class="condition-badge condition-fair">Unsettled — slight degradation</span></td></tr>
+                <tr><td>16-29</td><td><span class="condition-badge condition-fair">Active — noticeable impact</span></td></tr>
+                <tr><td>30-49</td><td><span class="condition-badge condition-poor">Minor storm</span></td></tr>
+                <tr><td>50+</td><td><span class="condition-badge condition-poor">Major storm — severe disruption</span></td></tr>
+              </tbody>
+            </table>
+            <p>Because the A-Index is a 24-hour average, it gives you a broad picture of the day's geomagnetic state but may not reflect short-term disturbances. Check the K-Index for more current conditions.</p>
+          </div>
+        </details>
+
+        <details class="collapsible" open>
+          <summary>K-Index</summary>
+          <div class="collapsible-content">
+            <p>The K-Index is a three-hour measurement of geomagnetic disturbance on a scale from 0 to 9, making it more responsive to current conditions than the daily A-Index. This is one of the most useful real-time indicators for deciding whether to get on the air right now.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>K-Index</th><th>Conditions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>0-1</td><td><span class="condition-badge condition-good">Very quiet — excellent HF</span></td></tr>
+                <tr><td>2-3</td><td><span class="condition-badge condition-fair">Unsettled — most won't notice</span></td></tr>
+                <tr><td>4</td><td><span class="condition-badge condition-poor">Active — storm threshold</span></td></tr>
+                <tr><td>5+</td><td><span class="condition-badge condition-poor">Storm — serious degradation</span></td></tr>
+              </tbody>
+            </table>
+            <p>At K-Index 5 and above, HF propagation can become seriously degraded, especially on higher bands and on paths that pass through high latitudes.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>X-Ray Flux (Solar Flares)</summary>
+          <div class="collapsible-content">
+            <p>Solar flares are classified by their peak X-ray output using a lettered scale where each class is ten times more powerful than the one below it.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>Class</th><th>Impact on HF</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>A, B</td><td><span class="condition-badge condition-good">Background — no effect</span></td></tr>
+                <tr><td>C</td><td><span class="condition-badge condition-fair">Minor — brief, slight degradation on sunlit side</span></td></tr>
+                <tr><td>M</td><td><span class="condition-badge condition-poor">Moderate — can black out HF on daylight side for minutes to an hour</span></td></tr>
+                <tr><td>X</td><td><span class="condition-badge condition-poor">Major — complete HF blackout on sunlit hemisphere, lasting minutes to hours</span></td></tr>
+              </tbody>
+            </table>
+            <p>The same active sun that produces flares also produces the high SFI that creates great propagation. Operators must accept some flare risk as a trade-off during solar maximum.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>Bz (Interplanetary Magnetic Field)</summary>
+          <div class="collapsible-content">
+            <p>The Bz component measures the north-south orientation of the interplanetary magnetic field (IMF) carried by the solar wind past Earth, in nanotesla (nT). It is one of the most critical short-term indicators of geomagnetic disturbance.</p>
+            <ul>
+              <li><strong>Positive Bz (northward):</strong> Earth's magnetosphere is shielded. HF conditions remain stable.</li>
+              <li><strong>Negative Bz (southward):</strong> The solar wind couples with Earth's magnetic field, driving geomagnetic storms that degrade HF propagation.</li>
+            </ul>
+            <p>A sustained Bz of -10 nT or worse, especially combined with elevated solar wind speed, is a strong signal that HF conditions are about to deteriorate and the K-Index will soon rise.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>Solar Wind</summary>
+          <div class="collapsible-content">
+            <p>The solar wind is a continuous stream of charged particles flowing from the sun, and its speed at Earth's orbit is a key factor in geomagnetic activity. Values are in km/s.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>Speed (km/s)</th><th>Conditions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>300-400</td><td><span class="condition-badge condition-good">Normal — no threat to HF</span></td></tr>
+                <tr><td>400-500</td><td><span class="condition-badge condition-fair">Elevated — watch Bz</span></td></tr>
+                <tr><td>500-700</td><td><span class="condition-badge condition-poor">High — can trigger storms</span></td></tr>
+                <tr><td>700+</td><td><span class="condition-badge condition-poor">Very high — storm likely</span></td></tr>
+              </tbody>
+            </table>
+            <p>High solar wind speed combined with a negative Bz is the worst-case combination for HF propagation, as it drives rapid and intense geomagnetic disturbance.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>Signal Noise</summary>
+          <div class="collapsible-content">
+            <p>Signal noise levels in S-units indicate the background radio noise floor on the HF bands. This directly affects your ability to hear weak signals.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>Noise Level</th><th>Conditions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>S0-S1</td><td><span class="condition-badge condition-good">Very quiet — excellent</span></td></tr>
+                <tr><td>S2-S4</td><td><span class="condition-badge condition-fair">Moderate — most signals readable</span></td></tr>
+                <tr><td>S5+</td><td><span class="condition-badge condition-poor">Noisy — only strong signals</span></td></tr>
+              </tbody>
+            </table>
+            <p>Noise comes from atmospheric sources (thunderstorms), man-made interference (electronics, power lines), and galactic background. Noise levels tend to be higher on the lower bands and during summer months.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>Geomagnetic Field Status</summary>
+          <div class="collapsible-content">
+            <p>The geomagnetic field status is a human-readable summary that corresponds to ranges of the K-Index and A-Index.</p>
+            <table class="band-table">
+              <thead>
+                <tr><th>Status</th><th>Meaning</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="condition-badge condition-good">Quiet / Very Quiet</span></td><td>Favorable for HF propagation</td></tr>
+                <tr><td><span class="condition-badge condition-fair">Unsettled</span></td><td>Slight degradation possible</td></tr>
+                <tr><td><span class="condition-badge condition-fair">Active</span></td><td>Noticeable degradation, especially polar paths</td></tr>
+                <tr><td><span class="condition-badge condition-poor">Storm</span></td><td>Significant disruption on many bands</td></tr>
+                <tr><td><span class="condition-badge condition-poor">Major / Severe Storm</span></td><td>Entire HF bands may be unusable</td></tr>
+              </tbody>
+            </table>
+            <p>During storms, the auroral zone expands equatorward and absorbs HF signals passing through it. However, these same conditions can create VHF aurora opportunities.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>HF Band Conditions: Day vs. Night</summary>
+          <div class="collapsible-content">
+            <p>The band conditions table rates each band group as Good, Fair, or Poor for both daytime and nighttime propagation. The difference comes down to the ionosphere's behavior with and without sunlight.</p>
+            <h3>Daytime</h3>
+            <p>The sun ionizes the F-layer (which reflects HF signals back to Earth) but also creates the D-layer (which absorbs lower-frequency signals). This means higher bands (20m-10m) thrive during the day, while lower bands (80m-40m) have limited range due to D-layer absorption.</p>
+            <h3>Nighttime</h3>
+            <p>After sunset, the D-layer disappears and the lower bands come alive for DX. The F-layer weakens without solar illumination, so higher bands typically close at night. 40 meters often stays open well into the evening, and 80/160 meters become the primary long-distance bands.</p>
+            <h3>Band Groups</h3>
+            <table class="band-table">
+              <thead>
+                <tr><th>Band</th><th>Best Time</th><th>Needs High SFI?</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>80m-40m</td><td>Night</td><td>No — works year-round</td></tr>
+                <tr><td>30m-20m</td><td>Day (20m into evening)</td><td>Moderate helps</td></tr>
+                <tr><td>17m-15m</td><td>Day</td><td>Yes — opens with higher SFI</td></tr>
+                <tr><td>12m-10m</td><td>Day</td><td>Yes — needs strong solar activity</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>VHF Conditions: E-Skip and Aurora</summary>
+          <div class="collapsible-content">
+            <h3>Sporadic E-Skip</h3>
+            <p>Sporadic E-skip (Es) occurs when dense patches of ionization form in the E-layer at about 100 km altitude, reflecting VHF signals over distances of roughly 500 to 2,300 km. It is most common during late spring and early summer in the Northern Hemisphere.</p>
+            <p>When E-skip is reported as "Band Open," the 6-meter band and sometimes 2 meters can open up dramatically with strong signals appearing from unexpected directions. It is one of the most exciting propagation events in amateur radio.</p>
+            <h3>Aurora</h3>
+            <p>Aurora propagation occurs during geomagnetic storms when charged particles energize the auroral zones, creating an irregular reflective curtain that can scatter VHF and UHF signals. Signals reflected via aurora have a distinctive raspy, distorted tone that makes CW and digital modes far more practical than SSB voice.</p>
+            <p>While E-skip is a fair-weather friend associated with calm solar conditions, aurora is a silver lining of geomagnetic storms that would otherwise ruin HF propagation.</p>
+          </div>
+        </details>
+
+        <details class="collapsible">
+          <summary>Putting It All Together</summary>
+          <div class="collapsible-content">
+            <p>Here's a practical workflow for checking conditions before getting on the air:</p>
+            <ol>
+              <li><strong>Check SFI and Sunspot Number</strong> for overall solar cycle conditions and which bands are likely to be supported.</li>
+              <li><strong>Check K-Index and Bz</strong> for real-time geomagnetic conditions. K-Index 3 or below with neutral or positive Bz means favorable HF conditions.</li>
+              <li><strong>For high-band DX (10-20m):</strong> You want high SFI + low K-Index.</li>
+              <li><strong>For low-band DX (40-160m):</strong> Low noise levels and nighttime paths matter more than high SFI.</li>
+              <li><strong>For VHF:</strong> Watch for E-Skip openings (especially May-July) and aurora during geomagnetic storms.</li>
+            </ol>
+            <p>Remember that conditions change throughout the day and that propagation is ultimately determined by the state of the ionosphere over your specific path. Use the indices as guidelines rather than guarantees — the best operators check the data, get on the air, and listen for themselves.</p>
+            <p class="text-secondary" style="margin-top: var(--space-lg); font-size: var(--font-size-sm);">
+              Solar data provided by <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">N0NBH at hamqsl.com</a>.
+              Solar imagery from <a href="https://sdo.gsfc.nasa.gov/" target="_blank" rel="noopener">NASA SDO</a>.
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; <span id="year"></span> Tupelo Amateur Radio Club — K5TUP</p>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

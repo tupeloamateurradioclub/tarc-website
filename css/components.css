@@ -464,9 +464,79 @@ details.collapsible > .post-card-image {
   color: #6a2d2d;
 }
 
+.solar-index-sm {
+  font-size: var(--font-size-lg);
+}
+
+.band-status-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.vhf-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+/* Band layout: solar image + table side by side */
+.band-layout {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.band-layout-image {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.solar-disk-image {
+  width: 180px;
+  height: 180px;
+  border-radius: var(--border-radius);
+  object-fit: cover;
+  display: block;
+}
+
+.solar-disk-caption {
+  display: block;
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-xs);
+}
+
+.band-layout-table {
+  flex: 1;
+  min-width: 0;
+}
+
+.band-layout-table .band-table {
+  margin-bottom: 0;
+}
+
 .band-updated {
   font-size: var(--font-size-sm);
   margin-top: var(--space-sm);
+}
+
+@media (max-width: 600px) {
+  .band-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .solar-disk-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .band-layout-table {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {

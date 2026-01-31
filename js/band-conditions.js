@@ -1,7 +1,7 @@
 const HAMQSL_URL = 'https://www.hamqsl.com/solarxml.php';
-const CORS_PROXIES = [
-  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`
+const FETCH_URLS = [
+  `https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.hamqsl.com/solarxml.php')}`,
+  'https://www.hamqsl.com/solarxml.php'
 ];
 
 function conditionClass(condition) {
@@ -107,17 +107,13 @@ export async function initBandConditions() {
   const container = document.getElementById('band-conditions');
   if (!container) return;
 
-  // Try direct fetch first (works on localhost), then CORS proxies, then fallback to image widget
-  const attempts = [
-    HAMQSL_URL,
-    ...CORS_PROXIES.map(proxy => proxy(HAMQSL_URL))
-  ];
-
-  for (const url of attempts) {
+  // Try CORS proxy first (needed on live site), then direct (works on localhost)
+  for (const url of FETCH_URLS) {
     try {
       const response = await fetch(url);
       if (!response.ok) continue;
       const text = await response.text();
+      if (!text.includes('<solardata>')) continue;
       const data = parseXML(text);
       renderConditions(data);
       return;

@@ -73,7 +73,7 @@ function renderClassicView(updated) {
   return `
     <div class="band-fallback">
       <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">
-        <img src="https://www.hamqsl.com/solar101vhfpic.php" alt="Solar-Terrestrial Data and Band Conditions" loading="lazy" style="width: 100%; max-width: 468px; border-radius: var(--border-radius-sm);">
+        <img src="https://www.hamqsl.com/solar101vhfpic.php" alt="Solar-Terrestrial Data and Band Conditions" loading="lazy" style="width: 100%; border-radius: var(--border-radius-sm);">
       </a>
       <p class="text-secondary" style="margin-top: var(--space-sm); font-size: var(--font-size-sm);">
         Solar data provided by N0NBH — <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener">hamqsl.com</a>

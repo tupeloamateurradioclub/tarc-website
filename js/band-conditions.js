@@ -103,7 +103,7 @@ function parseXML(text) {
   return data;
 }
 
-export async function initBandConditions() {
+async function fetchBandConditions() {
   const container = document.getElementById('band-conditions');
   if (!container) return;
 
@@ -124,4 +124,24 @@ export async function initBandConditions() {
 
   // All fetch attempts failed — fall back to the N0NBH image widget
   renderFallbackWidget(container);
+}
+
+export async function initBandConditions() {
+  const container = document.getElementById('band-conditions');
+  if (!container) return;
+
+  await fetchBandConditions();
+
+  // Wire up refresh button
+  const refreshBtn = document.getElementById('band-refresh');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // Prevent collapsible from toggling
+      refreshBtn.classList.add('spinning');
+      container.innerHTML = '<p class="text-secondary">Refreshing...</p>';
+      await fetchBandConditions();
+      refreshBtn.classList.remove('spinning');
+    });
+  }
 }

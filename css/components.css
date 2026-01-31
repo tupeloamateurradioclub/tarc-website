@@ -333,6 +333,35 @@ details.collapsible > .post-card-image {
   }
 }
 
+/* ===== REFRESH BUTTON ===== */
+.refresh-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--border-radius-sm);
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-base);
+  line-height: 1;
+  vertical-align: middle;
+  margin-left: var(--space-sm);
+}
+
+.refresh-btn:hover {
+  color: var(--color-accent);
+  background-color: var(--color-border);
+}
+
+.refresh-btn.spinning {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ===== BAND CONDITIONS ===== */
 .band-solar-indices {
   display: grid;

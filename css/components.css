@@ -376,6 +376,10 @@ details.collapsible > .post-card-image {
   opacity: 0.7;
 }
 
+.band-fallback a {
+  display: block;
+}
+
 /* ===== BAND CONDITIONS ===== */
 .band-solar-indices {
   display: grid;

@@ -108,6 +108,7 @@
 @media (max-width: 768px) {
   .navbar-hamburger {
     display: block;
+    margin-left: auto;
   }
 
   .navbar-nav {

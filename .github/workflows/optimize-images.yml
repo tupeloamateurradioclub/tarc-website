@@ -1,0 +1,56 @@
+name: Optimize Images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'images/uploads/**'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y imagemagick jpegoptim optipng
+
+      - name: Optimize new images
+        run: |
+          cd images/uploads
+          touch .optimized
+
+          shopt -s nullglob nocaseglob
+
+          for file in *.jpg *.jpeg *.png *.webp; do
+            # Skip if already optimized
+            grep -qxF "$file" .optimized && continue
+
+            echo "Optimizing: $file"
+
+            # Resize to max 1200px wide (skip if already smaller), strip metadata
+            mogrify -resize '1200x>' -strip "$file"
+
+            # Additional compression by format
+            case "${file,,}" in
+              *.jpg|*.jpeg)
+                jpegoptim --max=85 --strip-all --quiet "$file"
+                ;;
+              *.png)
+                optipng -o2 -quiet "$file"
+                ;;
+            esac
+
+            echo "$file" >> .optimized
+          done
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add images/uploads/
+          git pull --rebase origin main 2>/dev/null || true
+          git diff --staged --quiet || (git commit -m "chore: auto-optimize uploaded images" && git push)

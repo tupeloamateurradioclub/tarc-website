@@ -2,7 +2,7 @@
 
 Static website for the Tupelo Amateur Radio Club (K5TUP), hosted on GitHub Pages.
 
-**Live site:** https://tupeloamateurradioclub.github.io/tarc-website/
+**Live site:** https://k5tup.org
 
 ## Quick Start (Local Development)
 
@@ -18,10 +18,12 @@ No build tools, no npm, no dependencies. Just static files.
 
 | Page | File | Description |
 |------|------|-------------|
-| News (home) | `index.html` | Landing page with latest posts and meeting banner |
-| About | `about.html` | Club info, officers, history |
+| News (home) | `index.html` | Landing page with welcome card and latest posts |
+| About | `about.html` | Club info and history |
 | Resources | `resources.html` | Band conditions, repeaters, nets, links |
-| Contact | `contact.html` | Email, mailing address, how to join |
+| Calendar | `calendar.html` | Embedded Google Calendar with club events |
+| Papa Jack's | `papajacks.html` | Annual Papa Jack's Trade Day event info |
+| Contact | `contact.html` | Facebook, meetings, email info cards |
 | Band Help | `band-help.html` | Guide to solar indices and propagation data |
 | Post (single) | `post.html` | Template for full-length posts |
 | CMS Admin | `admin/index.html` | Sveltia CMS content editor |
@@ -33,9 +35,12 @@ TARCsite/
 ├── index.html              # News / landing page
 ├── about.html              # About page
 ├── resources.html          # Resources page
+├── calendar.html           # Calendar page (Google Calendar embed)
+├── papajacks.html          # Papa Jack's Trade Day page
 ├── contact.html            # Contact page
 ├── post.html               # Single post template
 ├── band-help.html          # Band conditions educational guide
+├── CNAME                   # Custom domain (k5tup.org)
 ├── .nojekyll               # Prevents GitHub Pages Jekyll processing
 ├── admin/
 │   ├── index.html          # Sveltia CMS admin UI
@@ -44,7 +49,7 @@ TARCsite/
 │   ├── variables.css       # Theme colors, spacing, fonts (edit this for theming)
 │   ├── base.css            # Reset, base typography
 │   ├── layout.css          # Page grid, containers
-│   ├── components.css      # Navbar, cards, collapsibles, band widget
+│   ├── components.css      # Navbar, cards, collapsibles, band widget, calendar
 │   └── utilities.css       # Large-text overrides, helper classes
 ├── js/
 │   ├── main.js             # Entry point — imports and initializes all modules
@@ -52,15 +57,17 @@ TARCsite/
 │   ├── text-size.js        # Large text mode toggle
 │   ├── band-conditions.js  # HamQSL solar data widget
 │   ├── posts.js            # Loads and renders Markdown posts
-│   └── markdown.js         # Lightweight Markdown-to-HTML parser
+│   ├── markdown.js         # Lightweight Markdown-to-HTML parser
+│   └── easter-egg.js       # Hidden easter eggs
 ├── posts/
 │   ├── index.json          # Auto-generated list of post files (do not edit manually)
 │   └── *.md                # Post files (Markdown with front matter)
 ├── images/
-│   └── uploads/            # Images uploaded via CMS
+│   └── uploads/            # Images uploaded via CMS (auto-optimized)
 ├── .github/
 │   └── workflows/
-│       └── update-posts-index.yml  # Auto-updates posts/index.json
+│       ├── update-posts-index.yml  # Auto-updates posts/index.json
+│       └── optimize-images.yml     # Auto-optimizes uploaded images
 └── README.md
 ```
 
@@ -70,7 +77,7 @@ TARCsite/
 
 ### Using the CMS (Recommended)
 
-1. Go to https://tupeloamateurradioclub.github.io/tarc-website/admin/
+1. Go to https://k5tup.org/admin/
 2. Click **Sign in with GitHub** and authorize the app
 3. Click **Posts → New Post**
 4. Fill in the fields:
@@ -113,6 +120,43 @@ Add images with ![description](images/uploads/photo.jpg)
 - **Full posts** (`type: full`): Show a preview card on the News page with a "Read more" link to a dedicated page. Good for longer articles, event recaps, photos.
 
 Both types support an optional featured image.
+
+---
+
+## Components
+
+### Info Cards
+
+Reusable cards used across the site (News welcome card, Contact page). Two variants:
+
+- **`.info-card`** — Accent-colored background with white text. Good for standout CTAs.
+- **`.info-card .info-card-light`** — Surface background with accent headings. Good for stacking multiple cards.
+
+```html
+<div class="info-card info-card-light">
+  <h3>Card Title</h3>
+  <p>Card content here.</p>
+</div>
+```
+
+### Collapsible Sections
+
+```html
+<details class="collapsible" open>
+  <summary>Section Title</summary>
+  <div class="collapsible-content">
+    <p>Your content here.</p>
+  </div>
+</details>
+```
+
+Remove `open` to start collapsed.
+
+---
+
+## Calendar
+
+The Calendar page embeds a Google Calendar iframe. Events are managed entirely through Google Calendar — no code changes needed to add, edit, or remove events. The calendar displays in month view in the America/Chicago timezone.
 
 ---
 
@@ -171,20 +215,6 @@ Changes cascade everywhere automatically.
 3. Move `class="active"` in the navbar to your new page's link
 4. Add a `<li>` to the navbar `<ul class="navbar-nav">` in **every** HTML file
 5. Replace the `<main>` content
-6. Use `<details class="collapsible" open>` for sections to maintain consistency
-
-### Adding a Collapsible Section
-
-```html
-<details class="collapsible" open>
-  <summary>Section Title</summary>
-  <div class="collapsible-content">
-    <p>Your content here.</p>
-  </div>
-</details>
-```
-
-Remove `open` to start collapsed.
 
 ### Adding a CSS Module
 
@@ -206,17 +236,13 @@ Remove `open` to start collapsed.
 
 ## Deployment
 
-This site runs on GitHub Pages:
+The site runs on GitHub Pages with a custom domain:
 
-1. Push the repo to GitHub
-2. Go to repo **Settings → Pages**
-3. Set source to **main branch**, root directory
-4. The site will be live at `https://username.github.io/repo-name/`
+- **Domain:** k5tup.org
+- **Registrar:** Namecheap
+- **HTTPS:** Enforced via GitHub Pages
 
-**Custom domain** (e.g., tupeloarc.org):
-1. Add a `CNAME` file to the repo root containing your domain
-2. Configure DNS with your registrar (CNAME record pointing to `username.github.io`)
-3. Enable HTTPS in GitHub Pages settings
+DNS is configured with four A records pointing to GitHub's IPs (`185.199.108-111.153`) and a CNAME for `www` pointing to `tupeloamateurradioclub.github.io`. The `CNAME` file in the repo root tells GitHub Pages to serve the site at `k5tup.org`.
 
 ## CMS Setup (One-Time, Already Done)
 
@@ -230,10 +256,12 @@ Setup steps (already completed for this site):
 
 If the OAuth App needs to be recreated:
 1. Go to **GitHub → Organization Settings → Developer Settings → OAuth Apps**
-2. Create a new app with callback URL: `https://tupeloamateurradioclub.github.io/tarc-website/admin/`
+2. Create a new app with callback URL: `https://k5tup.org/admin/`
 3. Copy the Client ID into `admin/config.yml` under `backend.app_id`
 
-## GitHub Action: Auto-Update Posts Index
+## GitHub Actions
+
+### Auto-Update Posts Index
 
 The workflow at `.github/workflows/update-posts-index.yml` automatically regenerates `posts/index.json` whenever `.md` files are added, changed, or deleted in the `posts/` folder. This means:
 
@@ -241,6 +269,15 @@ The workflow at `.github/workflows/update-posts-index.yml` automatically regener
 - Creating a post file on GitHub → index is updated automatically
 - Deleting a post → index is updated automatically
 - **Nobody ever needs to edit `posts/index.json` manually**
+
+### Auto-Optimize Images
+
+The workflow at `.github/workflows/optimize-images.yml` runs whenever images are added to `images/uploads/`. It automatically:
+
+- Resizes images to a max width of 1200px
+- Strips EXIF/GPS metadata (for privacy)
+- Compresses JPEGs to quality 85 and optimizes PNGs
+- Tracks processed files in `.optimized` to avoid reprocessing
 
 ---
 

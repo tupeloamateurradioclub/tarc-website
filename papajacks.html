@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post — TARC</title>
+  <meta name="description" content="Papa Jack's Trade Day — an annual event hosted by the Tupelo Amateur Radio Club (K5TUP).">
+  <title>Papa Jack's — TARC</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -23,7 +24,7 @@
         <li><a href="index.html">News</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="resources.html">Resources</a></li>
-        <li><a href="papajacks.html">Papa Jack's</a></li>
+        <li><a href="papajacks.html" class="active">Papa Jack's</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <div class="navbar-toggles">
@@ -40,10 +41,16 @@
   <div class="page-wrapper">
     <main class="page-content">
       <div class="container">
-        <a href="index.html" class="read-more">&larr; Back to News</a>
-        <article id="post-content" class="mt-lg">
-          <p class="text-secondary">Loading post...</p>
-        </article>
+        <div class="page-header">
+          <h1>Papa Jack's Trade Day</h1>
+          <p>An annual event hosted by the Tupelo Amateur Radio Club.</p>
+        </div>
+
+        <div class="info-card">
+          <h3>Details Coming Soon</h3>
+          <p>We're currently planning this year's Papa Jack's Trade Day. Check back here for date, location, and event details as they become available.</p>
+          <p>Follow our <a href="https://www.facebook.com/groups/tupeloamateurradioclub" target="_blank" rel="noopener">Facebook page</a> or <a href="contact.html">get in touch</a> to stay in the loop.</p>
+        </div>
       </div>
     </main>
 
@@ -55,38 +62,5 @@
   </div>
 
   <script type="module" src="js/main.js"></script>
-  <script type="module">
-    import { parseMarkdown, parseFrontMatter } from './js/markdown.js';
-
-    const slug = new URLSearchParams(window.location.search).get('slug');
-    const container = document.getElementById('post-content');
-
-    if (slug) {
-      try {
-        const res = await fetch(`posts/${slug}.md`);
-        if (!res.ok) throw new Error('Post not found');
-        const text = await res.text();
-        const { meta, body } = parseFrontMatter(text);
-        if (meta.image) meta.image = meta.image.replace(/^\//, '');
-
-        document.title = `${meta.title} — TARC`;
-
-        const imageHtml = meta.image
-          ? `<img src="${meta.image}" alt="${meta.title}" style="border-radius: var(--border-radius); margin-bottom: var(--space-lg);" loading="lazy">`
-          : '';
-
-        container.innerHTML = `
-          <div class="post-card-meta mb-md">${new Date(meta.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-          <h1>${meta.title}</h1>
-          ${imageHtml}
-          <div class="mt-lg">${parseMarkdown(body)}</div>
-        `;
-      } catch (err) {
-        container.innerHTML = '<p class="text-secondary">Post not found.</p>';
-      }
-    } else {
-      container.innerHTML = '<p class="text-secondary">Post not found.</p>';
-    }
-  </script>
 </body>
 </html>

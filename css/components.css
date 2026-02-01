@@ -590,3 +590,50 @@ details.collapsible > .post-card-image {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ===== EASTER EGG ===== */
+.easter-egg-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.easter-egg-overlay.visible {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.easter-egg-modal {
+  text-align: center;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+}
+
+.easter-egg-overlay.visible .easter-egg-modal {
+  transform: scale(1);
+}
+
+.easter-egg-modal img {
+  max-width: 280px;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-md);
+}
+
+.easter-egg-modal p {
+  color: #FFFFFF;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-sm);
+}
+
+.easter-egg-dismiss {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: var(--font-size-sm);
+}

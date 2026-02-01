@@ -2,12 +2,14 @@ import { initTheme } from './theme.js';
 import { initTextSize } from './text-size.js';
 import { initBandConditions } from './band-conditions.js';
 import { initPosts } from './posts.js';
+import { initEasterEgg } from './easter-egg.js';
 
 // Initialize core features
 initTheme();
 initTextSize();
 initBandConditions();
 initPosts();
+initEasterEgg();
 
 // Hamburger menu toggle
 const hamburger = document.querySelector('.navbar-hamburger');

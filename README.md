@@ -2,7 +2,9 @@
 
 Static website for the Tupelo Amateur Radio Club (K5TUP), hosted on GitHub Pages.
 
-## Quick Start
+**Live site:** https://tupeloamateurradioclub.github.io/tarc-website/
+
+## Quick Start (Local Development)
 
 1. Clone the repo
 2. Run `python3 -m http.server` in the project root
@@ -16,12 +18,13 @@ No build tools, no npm, no dependencies. Just static files.
 
 | Page | File | Description |
 |------|------|-------------|
-| News (home) | `index.html` | Landing page — latest posts, meeting banner |
+| News (home) | `index.html` | Landing page with latest posts and meeting banner |
 | About | `about.html` | Club info, officers, history |
 | Resources | `resources.html` | Band conditions, repeaters, nets, links |
 | Contact | `contact.html` | Email, mailing address, how to join |
+| Band Help | `band-help.html` | Guide to solar indices and propagation data |
 | Post (single) | `post.html` | Template for full-length posts |
-| CMS Admin | `admin/index.html` | Decap CMS content editor |
+| CMS Admin | `admin/index.html` | Sveltia CMS content editor |
 
 ## File Structure
 
@@ -32,8 +35,10 @@ TARCsite/
 ├── resources.html          # Resources page
 ├── contact.html            # Contact page
 ├── post.html               # Single post template
+├── band-help.html          # Band conditions educational guide
+├── .nojekyll               # Prevents GitHub Pages Jekyll processing
 ├── admin/
-│   ├── index.html          # Decap CMS admin UI
+│   ├── index.html          # Sveltia CMS admin UI
 │   └── config.yml          # CMS configuration
 ├── css/
 │   ├── variables.css       # Theme colors, spacing, fonts (edit this for theming)
@@ -49,65 +54,126 @@ TARCsite/
 │   ├── posts.js            # Loads and renders Markdown posts
 │   └── markdown.js         # Lightweight Markdown-to-HTML parser
 ├── posts/
-│   ├── index.json          # List of post filenames (newest first)
+│   ├── index.json          # Auto-generated list of post files (do not edit manually)
 │   └── *.md                # Post files (Markdown with front matter)
 ├── images/
 │   └── uploads/            # Images uploaded via CMS
+├── .github/
+│   └── workflows/
+│       └── update-posts-index.yml  # Auto-updates posts/index.json
 └── README.md
 ```
 
-## How-To Guides
+---
 
-### Writing a Post (Decap CMS)
+## Creating Posts
 
-1. Go to `https://yoursite.com/admin/`
-2. Log in with your GitHub account
+### Using the CMS (Recommended)
+
+1. Go to https://tupeloamateurradioclub.github.io/tarc-website/admin/
+2. Click **Sign in with GitHub** and authorize the app
 3. Click **Posts → New Post**
 4. Fill in the fields:
-   - **Title**: Post title
+   - **Title**: Post headline
    - **Date**: Publication date
-   - **Post Type**: `brief` (inline expandable) or `full` (own page with preview card)
-   - **Excerpt**: Preview text for full posts (optional)
-   - **Featured Image**: Upload an image for full posts (optional)
-   - **Body**: Write your content in the editor
+   - **Post Type**: `brief` (inline expandable on News page) or `full` (own page with preview card)
+   - **Excerpt**: Preview text shown on the News page (optional, for full posts)
+   - **Featured Image**: Header image for the post (optional)
+   - **Body**: Write your content — you can add images, links, bold, italic, lists, etc.
 5. Click **Publish**
 
-The CMS commits the Markdown file to the `posts/` directory in your GitHub repo.
+That's it. The post appears on the site automatically. A GitHub Action updates the post index whenever a new post is committed.
 
-**Important:** After publishing via CMS, you must add the new filename to `posts/index.json` manually (in the GitHub web editor or locally). List newest files first.
+### Using GitHub Directly
 
-### Writing a Post (Manually)
-
-1. Create a new file in `posts/` named `YYYY-MM-DD-your-slug.md`
-2. Add front matter at the top:
+1. Go to the repo on GitHub and navigate to the `posts/` folder
+2. Click **Add file → Create new file**
+3. Name it `YYYY-MM-DD-your-slug.md` (e.g., `2026-02-15-field-day-recap.md`)
+4. Add front matter and content:
 
 ```yaml
 ---
 title: "Your Post Title"
-date: "2025-02-15"
-type: "full"           # or "brief"
-excerpt: "Preview text shown on News page"  # optional, for full posts
-image: "images/uploads/photo.jpg"           # optional
+date: 2026-02-15
+type: full
+excerpt: "Preview text shown on the News page."
+image: ""
 ---
 
 Your post content in Markdown here.
+
+Add images with ![description](images/uploads/photo.jpg)
 ```
 
-3. Add the filename to `posts/index.json` (newest first)
-4. Commit and push
+5. Commit the file. The GitHub Action auto-updates `posts/index.json` — no manual editing needed.
+
+### Post Types
+
+- **Brief posts** (`type: brief`): Appear directly on the News page as expandable sections. Good for short announcements, meeting reminders, quick updates.
+- **Full posts** (`type: full`): Show a preview card on the News page with a "Read more" link to a dedicated page. Good for longer articles, event recaps, photos.
+
+Both types support an optional featured image.
+
+---
+
+## Band Conditions Widget
+
+Located on the **Resources** page. Fetches live solar data from [HamQSL](https://www.hamqsl.com/solarxml.php) (N0NBH).
+
+### Custom View (default)
+- **Solar indices**: SFI, Sunspot Number, A-Index, K-Index, X-Ray flux, Bz (IMF), Solar Wind, Signal Noise
+- **Geomagnetic field status**: Color-coded badge (green = quiet, yellow = unsettled, red = storm)
+- **SDO solar corona image**: Live image from NASA's Solar Dynamics Observatory
+- **HF band conditions table**: Day and night ratings for 80m-40m, 30m-20m, 17m-15m, 12m-10m
+- **VHF conditions**: E-Skip (North America) and Aurora status
+
+### Classic View
+- The traditional N0NBH solar widget image from hamqsl.com
+
+### Controls
+- **Refresh**: Re-fetches the latest data
+- **Classic Widget / Custom View**: Toggles between views (preference saved)
+- **Help**: Links to `band-help.html` — a guide explaining every index and what it means for operating
+
+Data is fetched via a CORS proxy (allorigins.win) with a fallback to direct fetch. If all attempts fail, the widget falls back to the classic image view.
+
+---
+
+## Theming
+
+All theme values live in `css/variables.css`. Edit the CSS custom properties there to change colors, spacing, or font sizes. The file has three sections:
+
+- `:root` — light mode (default) + shared values (spacing, typography, layout)
+- `[data-theme="dark"]` — dark mode color overrides
+- `[data-text-size="large"]` — large text overrides
+
+Changes cascade everywhere automatically.
+
+### Dark Mode
+- Auto-detects OS preference on first visit
+- Manual toggle in navbar (moon/sun icon)
+- Saved in localStorage (`tarc-theme`)
+
+### Large Text Mode
+- Toggle in navbar ("Aa" button)
+- Increases base font from 16px to 22px with proportional scaling
+- Increases line height, letter spacing, and tap target sizes
+- Saved in localStorage (`tarc-text-size`)
+
+---
+
+## Adding Pages and Sections
 
 ### Adding a New Page
 
 1. Copy any existing page (e.g., `about.html`)
 2. Update the `<title>` and `<meta name="description">`
-3. Change the `class="active"` in the navbar to your new page's link
-4. Add a new `<li>` to the navbar `<ul class="navbar-nav">` in **every** HTML file
-5. Replace the `<main>` content with your new page content
+3. Move `class="active"` in the navbar to your new page's link
+4. Add a `<li>` to the navbar `<ul class="navbar-nav">` in **every** HTML file
+5. Replace the `<main>` content
 6. Use `<details class="collapsible" open>` for sections to maintain consistency
 
 ### Adding a Collapsible Section
-
-Add this HTML anywhere in a page's content area:
 
 ```html
 <details class="collapsible" open>
@@ -120,13 +186,13 @@ Add this HTML anywhere in a page's content area:
 
 Remove `open` to start collapsed.
 
-### Adding a New CSS Module
+### Adding a CSS Module
 
 1. Create a new file in `css/` (e.g., `css/my-feature.css`)
-2. Add a `<link rel="stylesheet" href="css/my-feature.css">` to every HTML page's `<head>`, after `utilities.css`
+2. Add `<link rel="stylesheet" href="css/my-feature.css">` to every HTML page's `<head>`, after `utilities.css`
 3. Use existing CSS variables from `variables.css` for colors, spacing, and fonts
 
-### Adding a New JS Module
+### Adding a JS Module
 
 1. Create a new file in `js/` (e.g., `js/my-feature.js`)
 2. Export an init function: `export function initMyFeature() { ... }`
@@ -136,58 +202,45 @@ Remove `open` to start collapsed.
    initMyFeature();
    ```
 
-## Theming
-
-All theme values live in `css/variables.css`. To change colors, spacing, or font sizes, edit the CSS custom properties there. The file has three sections:
-
-- `:root` — light mode (default) + shared values
-- `[data-theme="dark"]` — dark mode overrides
-- `[data-text-size="large"]` — large text overrides
-
-Changes here cascade everywhere automatically.
-
-## Dark Mode
-
-- Auto-detects OS preference on first visit
-- Manual toggle in navbar (moon/sun icon)
-- Preference saved in localStorage (`tarc-theme`)
-- Implemented via `data-theme` attribute on `<html>`
-
-## Large Text Mode
-
-- Toggle in navbar ("Aa" button)
-- Increases base font from 16px to 22px
-- Increases line height, letter spacing, and tap target sizes
-- Preference saved in localStorage (`tarc-text-size`)
-- Implemented via `data-text-size` attribute on `<html>`
-
-## Band Conditions Widget
-
-- Located on the Resources page
-- Fetches live data from [HamQSL Solar XML](https://www.hamqsl.com/solarxml.php)
-- Displays: SFI, Sunspot Number, A-Index, K-Index, and band-by-band conditions
-- Color-coded: green (good), yellow (fair), red (poor)
-- If the feed is unavailable, shows a graceful error message
+---
 
 ## Deployment
 
-This site is designed for GitHub Pages:
+This site runs on GitHub Pages:
 
 1. Push the repo to GitHub
 2. Go to repo **Settings → Pages**
 3. Set source to **main branch**, root directory
 4. The site will be live at `https://username.github.io/repo-name/`
 
-To use a custom domain (e.g., tupeloarc.org):
+**Custom domain** (e.g., tupeloarc.org):
 1. Add a `CNAME` file to the repo root containing your domain
-2. Configure DNS with your domain registrar (CNAME to `username.github.io`)
+2. Configure DNS with your registrar (CNAME record pointing to `username.github.io`)
 3. Enable HTTPS in GitHub Pages settings
 
-## Decap CMS Setup (One-Time)
+## CMS Setup (One-Time, Already Done)
 
-1. Update `admin/config.yml` — set `repo` to your GitHub repo path (e.g., `k5tup/tarc-website`)
-2. Register your site with [Decap CMS OAuth](https://decapcms.org/docs/github-backend/) or use the [Netlify Identity](https://decapcms.org/docs/add-to-your-site/#authentication) method for authentication
-3. Alternatively, for simple setups, use the `git-gateway` backend with Netlify
+The site uses **Sveltia CMS** — a browser-based Git CMS that authenticates directly with GitHub (no external OAuth server needed).
+
+Setup steps (already completed for this site):
+1. Registered a GitHub OAuth App under the organization
+2. Set the callback URL to the `/admin/` path
+3. Added the OAuth App's Client ID as `app_id` in `admin/config.yml`
+4. Sveltia CMS script loaded in `admin/index.html`
+
+If the OAuth App needs to be recreated:
+1. Go to **GitHub → Organization Settings → Developer Settings → OAuth Apps**
+2. Create a new app with callback URL: `https://tupeloamateurradioclub.github.io/tarc-website/admin/`
+3. Copy the Client ID into `admin/config.yml` under `backend.app_id`
+
+## GitHub Action: Auto-Update Posts Index
+
+The workflow at `.github/workflows/update-posts-index.yml` automatically regenerates `posts/index.json` whenever `.md` files are added, changed, or deleted in the `posts/` folder. This means:
+
+- Publishing via the CMS → index is updated automatically
+- Creating a post file on GitHub → index is updated automatically
+- Deleting a post → index is updated automatically
+- **Nobody ever needs to edit `posts/index.json` manually**
 
 ---
 

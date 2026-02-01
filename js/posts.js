@@ -71,6 +71,7 @@ export async function initPosts() {
         const res = await fetch(POSTS_DIR + filename);
         const text = await res.text();
         const { meta, body } = parseFrontMatter(text);
+        if (meta.image) meta.image = meta.image.replace(/^\//, '');
         const slug = filename.replace('.md', '');
         return { meta, body, slug, filename };
       })

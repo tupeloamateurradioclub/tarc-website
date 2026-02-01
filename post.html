@@ -66,6 +66,7 @@
         if (!res.ok) throw new Error('Post not found');
         const text = await res.text();
         const { meta, body } = parseFrontMatter(text);
+        if (meta.image) meta.image = meta.image.replace(/^\//, '');
 
         document.title = `${meta.title} — TARC`;
 

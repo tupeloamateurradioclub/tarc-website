@@ -338,6 +338,43 @@ details.collapsible > .post-card-image {
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* Light variant — surface bg with accent accents */
+.info-card-light {
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.info-card-light:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.info-card-light h3 {
+  color: var(--color-accent);
+}
+
+.info-card-light p,
+.info-card-light li {
+  color: var(--color-text-secondary);
+}
+
+.info-card-light a {
+  color: var(--color-accent);
+}
+
+.info-card-light a:hover {
+  color: var(--color-accent-hover);
+}
+
+.info-card-light ul {
+  margin: var(--space-sm) 0 0 var(--space-lg);
+  padding: 0;
+}
+
+.info-card-light li {
+  margin-bottom: var(--space-xs);
+  line-height: var(--line-height-base);
+}
+
 /* ===== BAND TOOLBAR & BUTTONS ===== */
 .band-toolbar {
   display: flex;

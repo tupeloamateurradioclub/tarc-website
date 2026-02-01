@@ -3,6 +3,7 @@ import { initTextSize } from './text-size.js';
 import { initBandConditions } from './band-conditions.js';
 import { initPosts } from './posts.js';
 import { initEasterEgg } from './easter-egg.js';
+import { initPost } from './post.js';
 
 // Initialize core features
 initTheme();
@@ -10,6 +11,7 @@ initTextSize();
 initBandConditions();
 initPosts();
 initEasterEgg();
+initPost();
 
 // Hamburger menu toggle
 const hamburger = document.querySelector('.navbar-hamburger');

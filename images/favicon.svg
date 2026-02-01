@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Bar across top -->
+  <rect x="4" y="4" width="56" height="10" rx="2" fill="#6B6B2E"/>
+  <!-- Inverted triangle -->
+  <polygon points="8,14 56,14 32,58" fill="#6B6B2E"/>
+  <!-- Letter T -->
+  <rect x="14" y="18" width="36" height="7" rx="1" fill="#FFFFFF"/>
+  <rect x="27" y="18" width="10" height="32" rx="1" fill="#FFFFFF"/>
+</svg>

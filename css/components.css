@@ -168,24 +168,6 @@
   color: #FFFFFF;
 }
 
-/* ===== CARDS ===== */
-.card {
-  background-color: var(--color-surface);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-card);
-  padding: var(--space-lg);
-  margin-bottom: var(--space-lg);
-  transition: background-color var(--transition-base), box-shadow var(--transition-base);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-card-hover);
-}
-
-.card h2, .card h3 {
-  margin-bottom: var(--space-md);
-}
-
 /* ===== COLLAPSIBLE SECTIONS ===== */
 details.collapsible {
   background-color: var(--color-surface);

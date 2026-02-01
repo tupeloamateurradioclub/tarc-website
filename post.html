@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <meta name="description" content="News and updates from the Tupelo Amateur Radio Club (K5TUP).">
+  <meta property="og:title" content="TARC — Tupelo Amateur Radio Club">
+  <meta property="og:description" content="News and updates from the Tupelo Amateur Radio Club (K5TUP).">
+  <meta property="og:url" content="https://k5tup.org/">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://k5tup.org/images/apple-touch-icon.png">
+  <meta name="twitter:card" content="summary">
   <title>Post — TARC</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
@@ -56,38 +65,5 @@
   </div>
 
   <script type="module" src="js/main.js"></script>
-  <script type="module">
-    import { parseMarkdown, parseFrontMatter } from './js/markdown.js';
-
-    const slug = new URLSearchParams(window.location.search).get('slug');
-    const container = document.getElementById('post-content');
-
-    if (slug) {
-      try {
-        const res = await fetch(`posts/${slug}.md`);
-        if (!res.ok) throw new Error('Post not found');
-        const text = await res.text();
-        const { meta, body } = parseFrontMatter(text);
-        if (meta.image) meta.image = meta.image.replace(/^\//, '');
-
-        document.title = `${meta.title} — TARC`;
-
-        const imageHtml = meta.image
-          ? `<img src="${meta.image}" alt="${meta.title}" style="border-radius: var(--border-radius); margin-bottom: var(--space-lg);" loading="lazy">`
-          : '';
-
-        container.innerHTML = `
-          <div class="post-card-meta mb-md">${new Date(meta.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-          <h1>${meta.title}</h1>
-          ${imageHtml}
-          <div class="mt-lg">${parseMarkdown(body)}</div>
-        `;
-      } catch (err) {
-        container.innerHTML = '<p class="text-secondary">Post not found.</p>';
-      }
-    } else {
-      container.innerHTML = '<p class="text-secondary">Post not found.</p>';
-    }
-  </script>
 </body>
 </html>

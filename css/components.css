@@ -303,34 +303,39 @@ details.collapsible > .post-card-image {
   color: var(--color-accent-hover);
 }
 
-/* ===== NEXT MEETING BANNER ===== */
-.meeting-banner {
+/* ===== INFO CARD ===== */
+.info-card {
   background-color: var(--color-accent);
   color: #FFFFFF;
   border-radius: var(--border-radius);
-  padding: var(--space-lg);
+  padding: var(--space-lg) var(--space-xl);
   margin-bottom: var(--space-xl);
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  flex-wrap: wrap;
 }
 
-.meeting-banner h3 {
+.info-card h3 {
   color: #FFFFFF;
-  margin: 0;
+  margin-bottom: var(--space-sm);
 }
 
-.meeting-banner p {
+.info-card p {
   color: rgba(255, 255, 255, 0.9);
-  margin: 0;
+  margin-bottom: var(--space-sm);
+  line-height: var(--line-height-base);
 }
 
-@media (max-width: 768px) {
-  .meeting-banner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.info-card p:last-child {
+  margin-bottom: 0;
+}
+
+.info-card a {
+  color: #FFFFFF;
+  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.info-card a:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ===== BAND TOOLBAR & BUTTONS ===== */

@@ -591,6 +591,18 @@ details.collapsible > .post-card-image {
   }
 }
 
+/* ===== CALENDAR EMBED ===== */
+.calendar-embed {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  background-color: var(--color-surface);
+}
+
+.calendar-embed iframe {
+  display: block;
+}
+
 /* ===== EASTER EGG ===== */
 .easter-egg-overlay {
   position: fixed;

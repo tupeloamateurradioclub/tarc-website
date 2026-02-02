@@ -51,45 +51,59 @@ function renderFullPostCard(post) {
   `;
 }
 
+async function loadAllPosts() {
+  const response = await fetch(POSTS_INDEX);
+  if (!response.ok) throw new Error('No posts index found');
+  const postFiles = await response.json();
+  if (!postFiles.length) return [];
+
+  const posts = await Promise.all(
+    postFiles.map(async (filename) => {
+      const res = await fetch(POSTS_DIR + filename);
+      const text = await res.text();
+      const { meta, body } = parseFrontMatter(text);
+      if (meta.image) meta.image = meta.image.replace(/^\//, '');
+      const slug = filename.replace('.md', '');
+      return { meta, body, slug, filename };
+    })
+  );
+
+  posts.sort((a, b) => (b.meta.date || '').localeCompare(a.meta.date || ''));
+  return posts;
+}
+
 export async function initPosts() {
-  const container = document.getElementById('posts-container');
-  if (!container) return;
+  const newsContainer = document.getElementById('posts-container');
+  const pjContainer = document.getElementById('papajacks-post');
+
+  if (!newsContainer && !pjContainer) return;
 
   try {
-    const response = await fetch(POSTS_INDEX);
-    if (!response.ok) throw new Error('No posts index found');
-    const postFiles = await response.json();
+    const posts = await loadAllPosts();
 
-    if (!postFiles.length) {
-      container.innerHTML = '<p class="text-secondary">No posts yet. Check back soon!</p>';
-      return;
+    // Render news page
+    if (newsContainer) {
+      const newsPosts = posts;
+      if (newsPosts.length) {
+        newsContainer.innerHTML = newsPosts.map(post => {
+          if (post.meta.type === 'brief') return renderBriefPost(post);
+          return renderFullPostCard(post);
+        }).join('');
+      } else {
+        newsContainer.innerHTML = '<p class="text-secondary">No posts yet. Check back soon!</p>';
+      }
     }
 
-    // Load all posts
-    const posts = await Promise.all(
-      postFiles.map(async (filename) => {
-        const res = await fetch(POSTS_DIR + filename);
-        const text = await res.text();
-        const { meta, body } = parseFrontMatter(text);
-        if (meta.image) meta.image = meta.image.replace(/^\//, '');
-        const slug = filename.replace('.md', '');
-        return { meta, body, slug, filename };
-      })
-    );
-
-    // Sort by date descending
-    posts.sort((a, b) => (b.meta.date || '').localeCompare(a.meta.date || ''));
-
-    // Render
-    container.innerHTML = posts.map(post => {
-      if (post.meta.type === 'brief') {
-        return renderBriefPost(post);
+    // Render latest Papa Jack's post
+    if (pjContainer) {
+      const pjPost = posts.find(p => p.meta.type === 'papajacks');
+      if (pjPost) {
+        pjContainer.innerHTML = renderFullPostCard(pjPost);
       }
-      return renderFullPostCard(post);
-    }).join('');
+    }
 
   } catch (err) {
-    container.innerHTML = '<p class="text-secondary">No posts yet. Check back soon!</p>';
+    if (newsContainer) newsContainer.innerHTML = '<p class="text-secondary">No posts yet. Check back soon!</p>';
     console.error('Posts error:', err);
   }
 }

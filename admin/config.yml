@@ -16,7 +16,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "Post Type", name: "type", widget: "select", options: ["full", "brief"], default: "full" }
+      - { label: "Post Type", name: "type", widget: "select", options: ["full", "brief", "papajacks"], default: "full", hint: "full = news article, brief = expandable snippet, papajacks = Papa Jack's Trade Day recap" }
       - { label: "Excerpt", name: "excerpt", widget: "string", required: false, hint: "Short preview text for full posts. Leave blank for brief posts." }
       - { label: "Featured Image", name: "image", widget: "image", required: false, hint: "Optional image for full posts." }
       - { label: "Body", name: "body", widget: "markdown" }
